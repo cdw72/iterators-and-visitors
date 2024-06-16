@@ -11,9 +11,11 @@ class RectangleContainer(Container):
         self.the_last = ''
         self.width = 0
 
+    # 访问者模式：在容器节点中调用访问者的访问方法
     def accept(self, visitor, icon_family):
         visitor.visit_container(self, icon_family)
 
+    # 绘制容器节点
     def draw(self, icon_family):
         if self.level == 1:
             if self.isfirst:
@@ -45,9 +47,11 @@ class RectangleLeaf(Leaf):
         self.the_last = ''
         self.width = 0
 
+    # 访问者模式：在叶子节点中调用访问者的访问方法
     def accept(self, visitor, icon_family):
         visitor.visit_leaf(self, icon_family)
 
+    # 绘制叶子节点
     def draw(self, icon_family):
         if self.name is not self.the_last:
             prefix = '│ ' + ' │ ' * (self.level - 2) + ' ├─' + icon_family['leaf']

@@ -9,9 +9,11 @@ class TreeContainer(Container):
         super().__init__(name)
         self.next_level = True
 
+    # 访问者模式：在容器节点中调用访问者的访问方法
     def accept(self, visitor, icon_family):
         visitor.visit_container(self, icon_family)
 
+    # 绘制容器节点
     def draw(self, icon_family):
         if self.level > 0:
             prefix = ('│' if self.level > 1 else '') + ' ' * (self.level - 1) * 2 + ('└─' if self.is_last else '├─') \
@@ -30,9 +32,11 @@ class TreeLeaf(Leaf):
         super().__init__(name)
         self.next_level = True
 
+    # 访问者模式：在叶子节点中调用访问者的访问方法
     def accept(self, visitor, icon_family):
         visitor.visit_leaf(self, icon_family)
 
+    # 绘制叶子节点
     def draw(self, icon_family):
         prefix = ('│' if self.level > 1 and self.next_level else '') + ' ' * (self.level - 1) * 2 + (
             '└─' if self.is_last else '├─') \

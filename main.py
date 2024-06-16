@@ -17,17 +17,29 @@ def process_command(command):
         # 移除 "fje" 前缀并解析参数
         args = parser.parse_args(shlex.split(command))
         json_data = read_json(args.file)
-        # 使用工厂方法模式创建相应的Visualizer对象和Iterator对象
+
+        # 工厂方法模式：根据指定的样式创建具体的Visualizer、Iterator、Visitor对象
         visualizer, IteratorClass, VisitorClass = VisualizerFactory.create_visualizer(args.style)
+
+        # 使用Visualizer对象构建树形结构
         json_root = visualizer.build_tree(json_data)
+
+        # 使用Visitor模式创建相应的访问者对象
+        # 访问者模式：允许在不改变数据结构的前提下添加新的操作
         visitor = VisitorClass()
+
+        # 使用Iterator模式创建相应的迭代器对象
+        # 迭代器模式：提供一种方法顺序访问一个聚合对象中的各个元素，而不暴露其内部的表示
         iterator = IteratorClass(json_root)
 
         # 使用抽象工厂模式创建相应的IconFamily对象
+        # 抽象工厂模式：提供一个接口，用于创建相关或依赖对象的家族，而不需要明确指定具体类
         icons = IconFactory.create_icon_family(args.icon)
         icon_family = icons.get_icons()
-        # 可视化JSON数据
+
+        # 使用Visualizer对象进行可视化
         visualizer.visualize(icon_family, iterator, visitor)
+
     except argparse.ArgumentError as e:
         print("Error:", e)
         print("Use 'fje -h' for help.")
